@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build -- --configuration production",
+  "outputDirectory": ".angular/build/upload-to-excel/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
