@@ -18,7 +18,8 @@ load_dotenv(os.path.join(BASE_DIR, "config", ".env"))
 
 app = Flask(__name__)
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:4200")
-CORS(app, resources={r"/api/*": {"origins": frontend_url}})
+frontend_origins = [origin.strip().rstrip("/") for origin in frontend_url.split(",") if origin.strip()]
+CORS(app, resources={r"/api/*": {"origins": frontend_origins}})
 
 mongo_uri = os.getenv("MONGODB_URI")
 mongo_client = None
