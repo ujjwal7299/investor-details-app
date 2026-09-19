@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.angular/
+backend/.venv/
+backend/__pycache__/
+backend/config/.env

@@ -1,0 +1,11 @@
+:host { display: block; min-height: 100vh; }
+.app-nav { align-items: center; display: flex; margin: 0 auto; max-width: 1400px; padding: 18px 24px 0; }
+.app-name { color: #18313a; font-size: .9rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.site-header { align-items: center; display: flex; justify-content: space-between; max-width: 1180px; margin: 0 auto; padding: 28px 32px; }
+.brand { align-items: center; color: #17231d; display: inline-flex; font-size: 1.05rem; font-weight: 750; gap: 10px; letter-spacing: .02em; text-decoration: none; }
+.brand-mark { align-items: center; background: #e5f350; border-radius: 9px; color: #17231d; display: inline-flex; font-size: 1rem; height: 32px; justify-content: center; width: 32px; }
+.header-status { color: #68756c; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
+.status-dot { background: #4c9a70; border-radius: 50%; display: inline-block; height: 7px; margin-right: 7px; vertical-align: 1px; width: 7px; }
+footer { color: #778179; font-size: .78rem; letter-spacing: .03em; padding: 0 32px 32px; text-align: center; }
+footer span { color: #c2c9bd; margin: 0 8px; }
+@media (max-width: 600px) { .site-header { padding: 20px; } .header-status { font-size: .68rem; } footer { padding: 0 20px 24px; } }

@@ -1,0 +1,79 @@
+<section class="dashboard-page">
+  <header class="dashboard-header">
+    <div>
+      <p class="eyebrow">Private workspace</p>
+      <h1>Investor dashboard</h1>
+      <p class="subtitle">{{ investors.length }} investor{{ investors.length === 1 ? '' : 's' }} registered</p>
+    </div>
+    <div class="dashboard-actions">
+      <button type="button" class="secondary-button" (click)="back.emit()">Investor form</button>
+      <button type="button" class="logout-button" (click)="logout()">Sign out</button>
+    </div>
+  </header>
+
+  @if (errorMessage) {
+    <div class="dashboard-error" role="alert">{{ errorMessage }}</div>
+  }
+  @if (isLoading) {
+    <div class="empty-state">Loading investor records...</div>
+  } @else if (!investors.length) {
+    <div class="empty-state">No investor submissions yet.</div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Address</th>
+            <th>Aadhaar</th>
+            <th>PAN</th>
+            <th>Created</th>
+            <th>Past details</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (investor of investors; track investor.id) {
+            <tr>
+              <td><strong>{{ currentValue(investor, 'name') }}</strong></td>
+              <td>{{ currentValue(investor, 'email') }}</td>
+              <td>{{ currentValue(investor, 'mobile') }}</td>
+              <td class="address">{{ currentValue(investor, 'address') }}</td>
+              <td>{{ currentValue(investor, 'aadhaarNumber') }}</td>
+              <td>{{ currentValue(investor, 'panNumber') }}</td>
+              <td>{{ investor.createdAt | date:'medium' }}</td>
+                <td>
+                @if (hasPastDetails(investor)) {
+                  <button type="button" class="past-button" (click)="togglePastDetails(investor)">
+                    {{ expandedInvestorId === investor.id ? 'Hide past details' : 'See past details' }}
+                  </button>
+                } @else {
+                  <span class="no-history">None</span>
+                }
+              </td>
+              <td><button type="button" class="remove-button" (click)="removeInvestor(investor)">Remove</button></td>
+            </tr>
+            @if (expandedInvestorId === investor.id && hasPastDetails(investor)) {
+              <tr class="past-row">
+                <td colspan="9">
+                  <div class="past-details">
+                    <strong>Previous values</strong>
+                    <dl>
+                      <dt>Name</dt><dd>{{ investor.name }}</dd>
+                      <dt>Email</dt><dd>{{ investor.email }}</dd>
+                      <dt>Mobile</dt><dd>{{ investor.mobile }}</dd>
+                      <dt>Address</dt><dd>{{ investor.address }}</dd>
+                    </dl>
+                    <small>Updated {{ investor.updatedAt | date:'medium' }}</small>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

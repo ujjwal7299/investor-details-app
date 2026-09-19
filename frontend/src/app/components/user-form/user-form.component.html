@@ -1,0 +1,31 @@
+<section class="form-page">
+  <div class="form-panel">
+    <div class="form-title">
+      <img class="logo" src="assets/logo.png" alt="Application logo">
+      <div class="title-copy"><div class="eyebrow">Investor onboarding <span class="eyebrow-dot"></span></div><h1>Let’s start a conversation.</h1><p>Share your details and our team will be in touch.</p></div>
+    </div>
+    @if (success) {
+      <div class="feedback success" role="status">
+        <span class="feedback-icon">✓</span>
+        <div><strong>{{ success.updated ? 'Details updated' : 'Submission received' }}</strong><p>{{ success.updated ? 'Your latest details were saved to the same record.' : 'Your record is safely in our system.' }}</p><small>Reference: <b>{{ success.id }}</b></small></div>
+      </div>
+    }
+    @if (errorMessage) { <div class="feedback failure" role="alert"><span class="feedback-icon">!</span><span>{{ errorMessage }}</span></div> }
+
+    <form [formGroup]="userForm" (ngSubmit)="submit()" novalidate>
+      <div class="section-label"><span>01</span><h2>Contact information</h2></div>
+      <div class="field-row">
+        <label class="field"><span>Full name</span><input formControlName="name" type="text" autocomplete="name" placeholder="e.g. Rahul Kumar" maxlength="100" [class.invalid]="hasError('name', 'required') || hasError('name', 'nameFormat')"><small class="error-text">@if (hasError('name', 'required')) { Name is required. } @else if (hasError('name', 'minlength') || hasError('name', 'nameFormat')) { Enter a valid name with at least 2 characters. }</small></label>
+        <label class="field"><span>Email address</span><input formControlName="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="255" [class.invalid]="hasError('email', 'required') || hasError('email', 'email')"><small class="error-text">@if (hasError('email', 'required')) { Email is required. } @else if (hasError('email', 'email')) { Enter a valid email address. }</small></label>
+      </div>
+      <label class="field"><span>Mobile number</span><input formControlName="mobile" type="tel" inputmode="numeric" autocomplete="tel" placeholder="9876543210" [class.invalid]="hasError('mobile', 'required') || hasError('mobile', 'mobileFormat')"><small class="error-text">@if (hasError('mobile', 'required')) { Mobile number is required. } @else if (hasError('mobile', 'mobileFormat')) { Use a valid 10-digit Indian mobile number. }</small></label>
+      <label class="field"><span>Full address</span><textarea formControlName="address" rows="3" maxlength="500" placeholder="Enter full address" [class.invalid]="hasError('address', 'required') || hasError('address', 'minlength')"></textarea><small class="error-text">@if (hasError('address', 'required')) { Address is required. } @else if (hasError('address', 'minlength')) { Enter at least 5 characters. }</small></label>
+      <div class="section-label identity-label"><span>02</span><h2>Identity verification</h2></div>
+      <div class="field-row">
+        <label class="field"><span>Aadhaar number</span><input formControlName="aadhaarNumber" type="password" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="12-digit Aadhaar number" [class.invalid]="hasError('aadhaarNumber', 'required') || hasError('aadhaarNumber', 'aadhaarFormat')"><small class="error-text">@if (hasError('aadhaarNumber', 'required')) { Aadhaar number is required. } @else if (hasError('aadhaarNumber', 'aadhaarFormat')) { Enter exactly 12 digits. }</small></label>
+        <label class="field"><span>PAN number</span><input formControlName="panNumber" type="text" autocomplete="off" maxlength="10" placeholder="ABCDE1234F" [class.invalid]="hasError('panNumber', 'required') || hasError('panNumber', 'panFormat')"><small class="error-text">@if (hasError('panNumber', 'required')) { PAN number is required. } @else if (hasError('panNumber', 'panFormat')) { Enter a valid PAN number. }</small></label>
+      </div>
+      <div class="form-footer"><span class="required-note"><b>*</b> All fields are required</span><button type="submit" [disabled]="isSubmitting"><span>{{ isSubmitting ? 'Submitting' : 'Submit details' }}</span>@if (isSubmitting) { <i class="loader"></i> } @else { <span class="button-arrow">→</span> }</button></div>
+    </form>
+  </div>
+</section>

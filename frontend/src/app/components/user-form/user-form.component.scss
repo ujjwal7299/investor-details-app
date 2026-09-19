@@ -1,0 +1,37 @@
+:host { display: block; }
+.form-page { padding: clamp(32px, 7vw, 76px) 18px; }
+.form-panel { background: rgba(255, 255, 255, .97); border: 1px solid #d9e5e5; border-radius: 18px; box-shadow: 0 24px 70px rgba(20, 54, 61, .13); margin: 0 auto; max-width: 720px; overflow: hidden; padding: clamp(24px, 5vw, 44px); position: relative; }
+.form-panel::before { background: #159a91; content: ''; height: 5px; inset: 0 0 auto; position: absolute; }
+.form-title { align-items: center; border-bottom: 1px solid #e6eeee; display: flex; gap: 18px; margin-bottom: 30px; padding: 8px 0 26px; }
+.logo { background: #effaf8; border: 1px solid #d5eeeb; border-radius: 13px; height: 64px; object-fit: contain; padding: 7px; width: 64px; }
+.title-copy { min-width: 0; }
+.eyebrow { align-items: center; color: #14837d; display: flex; font-size: .72rem; font-weight: 700; gap: 8px; letter-spacing: .12em; margin: 0 0 9px; text-transform: uppercase; }
+.eyebrow-dot { background: #e5b84d; border-radius: 50%; display: inline-block; height: 6px; width: 6px; }
+h1 { color: #18313a; font-size: clamp(1.55rem, 4vw, 2.1rem); letter-spacing: -.03em; line-height: 1.1; margin: 0 0 8px; }
+.form-title p { color: #6b7d80; font-size: .92rem; margin: 0; }
+.section-label { align-items: center; display: flex; gap: 11px; margin-bottom: 19px; }
+.section-label span { align-items: center; background: #e7f5f2; border-radius: 50%; color: #14837d; display: inline-flex; font-size: .7rem; font-weight: 800; height: 25px; justify-content: center; width: 25px; }
+h2 { color: #29444b; font-size: 1.02rem; margin: 0; }
+.identity-label { border-top: 1px solid #e6eeee; margin-top: 8px; padding-top: 25px; }
+.field-row { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
+.field { display: block; margin-bottom: 18px; }
+.field > span { color: #355158; display: block; font-size: .82rem; font-weight: 700; margin-bottom: 7px; }
+input, textarea { background: #fbfdfd; border: 1px solid #cbdcdd; border-radius: 7px; box-sizing: border-box; color: #18313a; font: inherit; font-size: .94rem; padding: 12px 13px; transition: border-color .18s, box-shadow .18s, background .18s; width: 100%; }
+textarea { min-height: 92px; resize: vertical; }
+input:focus, textarea:focus { background: #fff; border-color: #159a91; box-shadow: 0 0 0 3px rgba(21, 154, 145, .13); outline: 0; }
+input.invalid, textarea.invalid { border-color: #c75353; }
+input[type="password"] { letter-spacing: .12em; }
+input::placeholder, textarea::placeholder { color: #9aaeb0; }
+.error-text { color: #b43e46; display: block; font-size: .73rem; min-height: 16px; padding-top: 5px; }
+.form-footer { align-items: center; border-top: 1px solid #e6eeee; display: flex; gap: 20px; justify-content: space-between; margin-top: 9px; padding-top: 23px; }
+.required-note { color: #718286; font-size: .76rem; }
+.required-note b { color: #c75353; }
+button { align-items: center; background: #183f48; border: 0; border-radius: 7px; box-shadow: 0 7px 16px rgba(24, 63, 72, .16); color: #fff; cursor: pointer; display: inline-flex; font: inherit; font-size: .88rem; font-weight: 700; gap: 13px; justify-content: center; min-width: 142px; padding: 13px 18px; transition: background .18s, transform .18s; }
+button:hover:not(:disabled) { background: #126a6d; transform: translateY(-1px); }
+button:disabled { cursor: wait; opacity: .65; }
+.button-arrow { color: #f2c965; font-size: 1.15rem; }
+.loader { animation: spin .8s linear infinite; border: 2px solid rgba(255,255,255,.4); border-radius: 50%; display: inline-block; height: 14px; border-top-color: #fff; width: 14px; }
+.feedback { border-radius: 8px; font-size: .88rem; line-height: 1.4; margin-bottom: 23px; padding: 14px; }
+.feedback p { margin: 4px 0 6px; }.feedback small { font-size: .75rem; }.feedback-icon { font-weight: 800; margin-right: 8px; }.success { background: #eaf8f2; color: #176c55; }.failure { background: #fff0ef; color: #a23f42; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) { .form-page { padding: 28px 10px 48px; } .form-panel { border-radius: 13px; padding: 27px 18px; } .form-title { align-items: flex-start; gap: 13px; } .logo { height: 52px; width: 52px; } .field-row { display: block; } .form-footer { align-items: stretch; flex-direction: column; } button { width: 100%; } }

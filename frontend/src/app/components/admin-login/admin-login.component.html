@@ -1,0 +1,12 @@
+<section class="admin-page">
+  <div class="admin-card">
+    <button class="back-link" type="button" (click)="back.emit()">← Back to investor form</button>
+    <div class="admin-heading"><span class="admin-icon">A</span><div><p class="eyebrow">Restricted access</p><h1>Admin sign in</h1><p>View submitted investor details.</p></div></div>
+    @if (errorMessage) { <div class="login-error" role="alert">{{ errorMessage }}</div> }
+    <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+      <label class="field"><span>User ID</span><input formControlName="userId" autocomplete="username" placeholder="Enter admin user ID"><small>@if (loginForm.controls.userId.touched && loginForm.controls.userId.hasError('required')) { User ID is required. }</small></label>
+      <label class="field"><span>Password</span><input formControlName="password" type="password" autocomplete="current-password" placeholder="Enter password"><small>@if (loginForm.controls.password.touched && loginForm.controls.password.hasError('required')) { Password is required. }</small></label>
+      <button class="primary-button" type="submit" [disabled]="isSubmitting">{{ isSubmitting ? 'Signing in...' : 'Sign in' }}</button>
+    </form>
+  </div>
+</section>
