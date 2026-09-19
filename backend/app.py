@@ -20,15 +20,12 @@ app = Flask(__name__)
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:4200")
 CORS(app, resources={r"/api/*": {"origins": frontend_url}})
 
-mongo_client = MongoClient(os.environ["MONGODB_URI"], serverSelectionTimeoutMS=5000)
-database = mongo_client[os.getenv("MONGODB_DATABASE", "fieldnote")]
-users = database["users"]
-users.create_index([("email", ASCENDING)])
-users.create_index([("mobile", ASCENDING)])
-users.create_index([("createdAt", DESCENDING)])
-users.create_index([("aadhaarNumber", ASCENDING), ("panNumber", ASCENDING)], unique=True)
-admins = database["admins"]
-admins.create_index([("userId", ASCENDING)], unique=True)
+mongo_uri = os.getenv("MONGODB_URI")
+mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000) if mongo_uri else None
+database = mongo_client[os.getenv("MONGODB_DATABASE", "fieldnote")] if mongo_client else None
+users = database["users"] if database else None
+admins = database["admins"] if database else None
+indexes_ready = False
 
 NAME_PATTERN = re.compile(r"^[\w][\w .'-]*$", re.UNICODE)
 MOBILE_PATTERN = re.compile(r"^(?:\+91)?[6-9]\d{9}$")
@@ -36,6 +33,19 @@ EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 PAN_PATTERN = re.compile(r"^[A-Z]{5}\d{4}[A-Z]$")
 ADMIN_SESSION_HOURS = 8
 admin_sessions = {}
+
+
+def ensure_database():
+    global indexes_ready, mongo_client, database, users, admins
+    if mongo_client is None:
+        raise RuntimeError("MONGODB_URI is not configured")
+    if not indexes_ready:
+        users.create_index([("email", ASCENDING)])
+        users.create_index([("mobile", ASCENDING)])
+        users.create_index([("createdAt", DESCENDING)])
+        users.create_index([("aadhaarNumber", ASCENDING), ("panNumber", ASCENDING)], unique=True)
+        admins.create_index([("userId", ASCENDING)], unique=True)
+        indexes_ready = True
 
 
 def error_response(message, status, errors=None):
@@ -62,6 +72,7 @@ def health_check():
 
 @app.post("/api/admin/login")
 def admin_login():
+    ensure_database()
     payload = request.get_json(silent=True) or {}
     admin = admins.find_one({"userId": str(payload.get("userId", ""))})
     if not admin or not check_password_hash(admin["passwordHash"], str(payload.get("password", ""))):
@@ -81,6 +92,7 @@ def admin_logout():
 
 @app.get("/api/admin/investors")
 def admin_investors():
+    ensure_database()
     if not admin_session():
         return error_response("Admin login required", 401)
     records = []
@@ -95,6 +107,7 @@ def admin_investors():
 
 @app.delete("/api/admin/investors/<investor_id>")
 def delete_investor(investor_id):
+    ensure_database()
     if not admin_session():
         return error_response("Admin login required", 401)
     try:
@@ -154,6 +167,7 @@ def validate_user(payload):
 
 @app.post("/api/users")
 def create_user():
+    ensure_database()
     payload = request.get_json(silent=True)
     if not isinstance(payload, dict):
         return error_response("Request body must be valid JSON", 400)
