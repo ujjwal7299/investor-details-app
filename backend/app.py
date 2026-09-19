@@ -21,10 +21,10 @@ frontend_url = os.getenv("FRONTEND_URL", "http://localhost:4200")
 CORS(app, resources={r"/api/*": {"origins": frontend_url}})
 
 mongo_uri = os.getenv("MONGODB_URI")
-mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000) if mongo_uri else None
-database = mongo_client[os.getenv("MONGODB_DATABASE", "fieldnote")] if mongo_client else None
-users = database["users"] if database else None
-admins = database["admins"] if database else None
+mongo_client = None
+database = None
+users = None
+admins = None
 indexes_ready = False
 
 NAME_PATTERN = re.compile(r"^[\w][\w .'-]*$", re.UNICODE)
@@ -38,7 +38,13 @@ admin_sessions = {}
 def ensure_database():
     global indexes_ready, mongo_client, database, users, admins
     if mongo_client is None:
-        raise RuntimeError("MONGODB_URI is not configured")
+        mongo_uri = os.getenv("MONGODB_URI")
+        if not mongo_uri:
+            raise RuntimeError("MONGODB_URI is not configured")
+        mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
+        database = mongo_client[os.getenv("MONGODB_DATABASE", "fieldnote")]
+        users = database["users"]
+        admins = database["admins"]
     if not indexes_ready:
         users.create_index([("email", ASCENDING)])
         users.create_index([("mobile", ASCENDING)])
