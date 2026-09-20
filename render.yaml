@@ -12,6 +12,6 @@ services:
       - key: MONGODB_DATABASE
         value: fieldnote
       - key: FRONTEND_URL
-        sync: false
+        value: https://investor-details-33yrw4qgd.vercel.app
       - key: PYTHON_VERSION
         value: 3.11.9

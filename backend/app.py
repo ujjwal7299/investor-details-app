@@ -17,8 +17,16 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, "config", ".env"))
 
 app = Flask(__name__)
-frontend_url = os.getenv("FRONTEND_URL", "http://localhost:4200")
-frontend_origins = [origin.strip().rstrip("/") for origin in frontend_url.split(",") if origin.strip()]
+frontend_url = os.getenv("FRONTEND_URL", "")
+frontend_origins = {
+    origin.strip().rstrip("/")
+    for origin in frontend_url.split(",")
+    if origin.strip()
+}
+frontend_origins.update({
+    "http://localhost:4200",
+    "https://investor-details-33yrw4qgd.vercel.app",
+})
 CORS(app, resources={r"/api/*": {"origins": frontend_origins}})
 
 mongo_uri = os.getenv("MONGODB_URI")
